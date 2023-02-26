@@ -1,8 +1,9 @@
-FROM node:18-alpine
+FROM node:19-alpine
 WORKDIR /opt/app
-ADD package.json package.json
+COPY package.json package.json
+COPY yarn.lock yarn.lock
 RUN yarn
 ADD . .
 RUN yarn run build
-RUN npm prune --production
+RUN yarn install --production --ignore-scripts --prefer-offline --force --frozen-lockfile
 CMD ["node", "./dist/main.js"]
